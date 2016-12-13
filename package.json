@@ -7,7 +7,8 @@
   },
   "main": "test.js",
   "scripts": {
-    "start": "node test.js"
+    "start": "node test.js
+	      npm install"
   },
   "dependencies": {
     "ejs": "2.4.1",
