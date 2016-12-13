@@ -18,7 +18,7 @@ fs.readFile('example_log.txt', function (err, logData) {
   
 });
 
-app.get('/log', function (req, res) {
+app.get('/', function (req, res) {
 // Read the contents of the file into memory.
 	fs.readFile('example_log.txt', function (err, logData) {
   
