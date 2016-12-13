@@ -1,37 +1,33 @@
-var express = require('express')
-var app = express()
-// Require my new parser.js file.
-var Parser = require('./Parser');
+var express = require('express');
+var app = express();
+var mysql = require("mysql");
 
-// Load the fs (filesystem) module.
-var fs = require('fs');
+var connection = mysql.createConnection({
+    host: "us-cdbr-azure-east-c.cloudapp.net",
+    user : "bddfe4567fcee0",
+    password : "aaa47743",
+    database: "uncwesley"
+})
 
-// Read the contents of the file into memory.
-fs.readFile('example_log.txt', function (err, logData) {
-  
-// If an error occurred, throwing it will
-  // display the exception and kill our app.
-  if (err) throw err;
-  
-// logData is a Buffer, convert to string.
-  var text = logData.toString();
-  
+connection.connect(function(err){
+  if(!err) {
+    console.log("Database is connected ... nn");    
+  }else {
+    console.log("Error connecting database ... nn");    
+}
+
+
 });
 
 app.get('/', function (req, res) {
-// Read the contents of the file into memory.
-	fs.readFile('example_log.txt', function (err, logData) {
-  
-	// If an error occurred, throwing it will
-  	// display the exception and kill our app.
-  	if (err) throw err;
-  
-	// logData is a Buffer, convert to string.
-  	var text = logData.toString();
-  	var parser = new Parser();
-  	res.send(parser.parse(text))
-	});
-})
+connection.query('SELECT * from Events', function(err, rows, fields) {
+  connection.end();
+  if (!err)
+    console.log('The solution is: ', rows);
+  else
+    console.log('Error while performing Query.');
+  });
+});
 
 app.listen(process.env.PORT, function () {
   console.log('App running')
