@@ -1,0 +1,21 @@
+{
+  "name": "uncwesley",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "3.3.x"
+  },
+  "description": "An application to deliver content to UNC Wesley members",
+  "main": "test.js",
+  "devDependencies": {
+    "express": "^4.9.8"
+  },
+  "scripts": {
+    "test": "echo \"no tests\"",
+    "start": "echo \"starting\""
+  },
+  "author": "Jonathan Witten",
+  "license": "ISC",
+  "engines":{
+    "node":"4.1.1"
+  }
+}
