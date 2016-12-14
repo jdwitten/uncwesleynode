@@ -10,19 +10,23 @@ app.get('/', function (req, res) {
     user : "bddfe4567fcee0",
     password : "aaa47743",
     database: "uncwesley"
-  })
+  });
   connection.connect(function(err){
-  if(!err) {
-    console.log("Database is connected ... nn");    
-  }else {
-    console.log("Error connecting database ... nn");    
+    if(!err) {
+      console.log("Database is connected ... nn");    
+    }else {
+      console.log("Error connecting database ... nn");    
+    }
+    connection.query('SELECT * from events', function(err, rows, fields) {
+      connection.end();
+      if (!err){
+      console.log('The solution is: ', rows);
+      }
+      else{
+        console.log('Error while performing Query.');
+      }
+    }
   }
-  connection.query('SELECT * from events', function(err, rows, fields) {
-  connection.end();
-  if (!err)
-    console.log('The solution is: ', rows);
-  else
-    console.log('Error while performing Query.');
 });
 
 
