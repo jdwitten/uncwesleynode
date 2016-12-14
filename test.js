@@ -23,7 +23,6 @@ app.get('/', function (req, res) {
     console.log('The solution is: ', rows);
   else
     console.log('Error while performing Query.');
-  });
 });
 
 app.listen(process.env.PORT, function () {
