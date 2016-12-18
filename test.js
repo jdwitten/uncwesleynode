@@ -18,15 +18,14 @@ app.get('/', function (req, res) {
       console.log("Error connecting database ... nn");    
     }
     connection.query('SELECT * from events', function(err, rows, fields) {
-      connection.end();
       if (!err){
-      console.log('The solution is: ', rows);
+        res.status(200).send(rows);
       }
       else{
         console.log('Error while performing Query.');
       }
-    }
-  }
+    })
+  })
 });
 
 
