@@ -7,7 +7,7 @@
   },
   "main": "test.js",
   "scripts": {
-    "start": "node test.js"
+    "start": "node main.js"
   },
   "dependencies": {
     "ejs": "2.4.1",
