@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.2.5",
-  "description": "A sample Node.js app using Express 4",
+  "name": "UNC_Wesley_App_Manager",
+  "version": "0.0.1",
+  "description": "A management tool for the UNC Wesley Mobile app",
   "engines": {
     "node": "5.9.1"
   },
