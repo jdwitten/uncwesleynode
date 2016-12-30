@@ -56,15 +56,21 @@ Calendar.prototype.getNewToken = function(oauth2Client, callback) {
     scope: SCOPES
   });
   console.log('Authorize this app by visiting this url: ', authUrl);
-
-  oauth2Client.getToken("4/2wXqkQs3W7CH8nUsxWsLJsN9kpbjustPEmvjVsrZrEI#", function(err, token) {
-    if (err) {
-      console.log('Error while trying to retrieve access token', err);
-      return;
-    }
-    oauth2Client.credentials = token;
-    Calendar.prototype.storeToken(token);
-    callback(oauth2Client);
+  var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  rl.question('Enter the code from that page here: ', function(code) {
+    rl.close();
+    oauth2Client.getToken(code, function(err, token) {
+      if (err) {
+        console.log('Error while trying to retrieve access token', err);
+        return;
+      }
+      oauth2Client.credentials = token;
+      storeToken(token);
+      callback(oauth2Client);
+    });
   });
 }
 
