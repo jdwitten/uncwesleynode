@@ -2,7 +2,6 @@ var fs = require('fs');
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
-var gcal = require('google-calendar');
 var bus = require('./event-bus');
 var pool = require('./db-pool');
 var manager = require("./DataManager");
