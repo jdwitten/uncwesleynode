@@ -20,9 +20,12 @@ var Calendar = function(){
  */
 Calendar.prototype.authorize = function(credentials, callback) {
   var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+  /*
   var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
   process.env.USERPROFILE) + '/.credentials/';
   var TOKEN_PATH = TOKEN_DIR + 'calendar-nodejs-quickstart.json';
+  */
+  var TOKEN_PATH = "token.json"
   var clientSecret = credentials.web.client_secret;
   var clientId = credentials.web.client_id;
   var redirectUrl = credentials.web.redirect_uris[0];
