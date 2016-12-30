@@ -62,7 +62,7 @@ Calendar.prototype.getNewToken = function(oauth2Client, callback) {
   });
   rl.question('Enter the code from that page here: ', function(code) {
     rl.close();
-    oauth2Client.getToken(code, function(err, token) {
+    oauth2Client.getToken("4/39sjYvsS4iNAiGFSySeoF7TWA7DTTPaD8zlJPtHjsRo#", function(err, token) {
       if (err) {
         console.log('Error while trying to retrieve access token', err);
         return;
