@@ -16,7 +16,6 @@
 </head>
 
 <body>
-
 <div class="row red center-align">
   	<div class="col s12">
       	<ul class="tabs red">
@@ -32,21 +31,43 @@
 	<div class='container'>
 		<div class="row valign-wrapper">
 			<h1 class = "col s6 valign">Events</h1>
-			<div class="col s3 valign"></div>
+			<div class="col s3 valign"><a class="btn-floating btn-large waves-effect waves-light red" id="google_sync"><i class="material-icons">repeat</i></a></div>
 			<a class="dropdown-button btn red col s3" data-activates="event-filter" id="event-filter-label">Future Events</a>
 			<ul id="event-filter" class="dropdown-content">
 				<li><a id="filter-all-events">All Events</a></li>
 				<li><a id="filter-future-events">Future Events</a></li>
 				<li><a id="filter-past-events">Past Events</a></li>
 			</ul>
+
 		</div>
 		<ul class='collapsible' data-collapsible='accordion' id='event-collection'>
       	</ul>
     </div>
 </div>
 
-<div id="prayers" class="col s12">Prayers</div>
-<div id="blogs" class="col s12">Blogs</div>
+<div id="prayers" class="col s12">
+	<div class="container">
+		<div class="row valign-wrapper">
+			<h1 class = "col s6 valign">Prayers</h1>
+			<div class="col s3 valign"></div>
+			<a class="dropdown-button btn red col s3 valign" data-activates="prayer-filter" id="prayer-filter-label">Active Prayers</a>
+			<ul id="prayer-filter" class="dropdown-content">
+				<li><a id="filter-all-prayers">All Prayers</a></li>
+				<li><a id="filter-active-prayers">Active Prayers</a></li>
+				<li><a id="filter-inactive-prayers">Inactive Prayers</a></li>
+			</ul>
+		</div>
+		<ul class="collection z-depth-4" id="prayer-collection">
+		</ul>
+	</div>
+</div>
+<div id="blogs" class="col s12">
+	<div class="container">
+		<h1 class = "col s6 valign">Blogs</h1>
+		<ul class="collapsible" id="blog-collection">
+		</ul>
+	</div>
+</div>
 <div id="users" class="col s12">Users</div>
 <div id="notifications" class="col s12">Notifications</div>
 </body>

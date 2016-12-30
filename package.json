@@ -5,13 +5,15 @@
   "engines": {
     "node": "5.9.1"
   },
-  "main": "test.js",
+  "main": "main.js",
   "scripts": {
     "start": "node main.js"
   },
   "dependencies": {
     "ejs": "2.4.1",
     "express": "4.13.3",
+    "google-auth-library": "^0.9.10",
+    "googleapis": "^15.0.0",
     "mysql": "^2.5.4"
   },
   "repository": {
