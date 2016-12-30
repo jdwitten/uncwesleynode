@@ -33,7 +33,7 @@ Calendar.prototype.authorize = function(credentials, callback) {
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, function(err, token) {
     if (err) {
-      getNewToken(oauth2Client, callback);
+      Calendar.prototype.getNewToken(oauth2Client, callback);
     } else {
       oauth2Client.credentials = JSON.parse(token);
       callback(oauth2Client);
@@ -67,7 +67,7 @@ Calendar.prototype.getNewToken = function(oauth2Client, callback) {
         return;
       }
       oauth2Client.credentials = token;
-      storeToken(token);
+      Calendar.prototype.storeToken(token);
       callback(oauth2Client);
     });
   });
