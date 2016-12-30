@@ -50,6 +50,7 @@ Calendar.prototype.authorize = function(credentials, callback) {
  *     client.
  */
 Calendar.prototype.getNewToken = function(oauth2Client, callback) {
+  var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   var authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES
