@@ -57,7 +57,7 @@ Calendar.prototype.getNewToken = function(oauth2Client, callback) {
   });
   console.log('Authorize this app by visiting this url: ', authUrl);
 
-  oauth2Client.getToken("4/39sjYvsS4iNAiGFSySeoF7TWA7DTTPaD8zlJPtHjsRo#", function(err, token) {
+  oauth2Client.getToken("4/2wXqkQs3W7CH8nUsxWsLJsN9kpbjustPEmvjVsrZrEI#", function(err, token) {
     if (err) {
       console.log('Error while trying to retrieve access token', err);
       return;
