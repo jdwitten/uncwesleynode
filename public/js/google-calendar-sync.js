@@ -56,21 +56,15 @@ Calendar.prototype.getNewToken = function(oauth2Client, callback) {
     scope: SCOPES
   });
   console.log('Authorize this app by visiting this url: ', authUrl);
-  var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  rl.question('Enter the code from that page here: ', function(code) {
-    rl.close();
-    oauth2Client.getToken("4/39sjYvsS4iNAiGFSySeoF7TWA7DTTPaD8zlJPtHjsRo#", function(err, token) {
-      if (err) {
-        console.log('Error while trying to retrieve access token', err);
-        return;
-      }
-      oauth2Client.credentials = token;
-      Calendar.prototype.storeToken(token);
-      callback(oauth2Client);
-    });
+
+  oauth2Client.getToken("4/39sjYvsS4iNAiGFSySeoF7TWA7DTTPaD8zlJPtHjsRo#", function(err, token) {
+    if (err) {
+      console.log('Error while trying to retrieve access token', err);
+      return;
+    }
+    oauth2Client.credentials = token;
+    Calendar.prototype.storeToken(token);
+    callback(oauth2Client);
   });
 }
 
@@ -80,6 +74,9 @@ Calendar.prototype.getNewToken = function(oauth2Client, callback) {
  * @param {Object} token The token to store to disk.
  */
 Calendar.prototype.storeToken = function(token) {
+  var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
+  process.env.USERPROFILE) + '/.credentials/';
+  var TOKEN_PATH = TOKEN_DIR + 'calendar-nodejs-quickstart.json';
   try {
     fs.mkdirSync(TOKEN_DIR);
   } catch (err) {
