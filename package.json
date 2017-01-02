@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A management tool for the UNC Wesley Mobile app",
   "engines": {
-    "node": "5.9.1"
+    "node": "5.12.0"
   },
   "main": "main.js",
   "scripts": {
