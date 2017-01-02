@@ -484,6 +484,7 @@ app.get("/notifications", function(req, res){
 })
 
 app.post("/token", jsonParser, function(req, res){
+  console.log(req.body)
   var tokenString = req.body.token
   console.log("received token string ", tokenString);
   pool.getConnection(function(err, connection){
