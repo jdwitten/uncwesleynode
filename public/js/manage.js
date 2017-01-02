@@ -154,7 +154,7 @@ $(document).ready(function(){
     	}
     	var date_split = date_text.split(/[ ,]+/).join(',').split(",");
     	var date = new Date(date_split[2], months[date_split[1]], date_split[0], date_hour, date_minute, 0, 0 )
-    	date.setHours(date.getHours()-5)
+    	date.setHours(date.getHours())
     	event.date = date;
     	console.log(event);
     	if(validateEvent(event)){
