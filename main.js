@@ -416,6 +416,7 @@ app.get('/calendar', function(req,res){
 
 
 bus.on("finishedSendingNotifications",function(response){
+  console.log("finished sending notifications");
   response.status(200).send();
 })
 
@@ -468,6 +469,7 @@ app.get("/notifications", function(req, res){
           notification.payload = {id: 123};
           var processed = tokens.length;
           for(var i=0; i<tokens.length; i++){
+            console.log("sending notification to ", tokens[i])
             deviceToken = tokens[i];
             // Actually send the notification
             apnProvider.send(notification, deviceToken).then(function(result) {  
