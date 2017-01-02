@@ -29,7 +29,7 @@ var Blog = function(id, text, author, date, title){
 }
 
 DataManager.prototype.postAPNS = function(tokenString, connection, callback){
-	connection.query("INSERT ? INTO tokens", [tokenString], function(err, rows, fields){
+	connection.query("INSERT INTO tokens (apns) VALUES(?)", [tokenString], function(err, rows, fields){
 		if(!err){
 			callback(err, true);
 		}else{

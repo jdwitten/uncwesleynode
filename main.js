@@ -485,9 +485,13 @@ app.get("/notifications", function(req, res){
 
 app.post("/token", jsonParser, function(req, res){
   var tokenString = req.body.token
+  console.log("received token string ", tokenString);
   pool.getConnection(function(err, connection){
     DataManager.prototype.postAPNS(tokenString, connection, function(err,success){
-      if(success) res.status(200).send()
+      if(success){
+        console.log("successfully inserted token")
+        res.status(200).send()
+      }
       else res.status(500).send()
     })
   })
