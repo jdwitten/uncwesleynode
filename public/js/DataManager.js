@@ -28,6 +28,32 @@ var Blog = function(id, text, author, date, title){
 	this.title = title;
 }
 
+DataManager.prototype.postAPNS = function(tokenString, connection, callback){
+	connection.query("INSERT ? INTO tokens", [tokenString], function(err, rows, fields){
+		if(!err){
+			callback(err, true);
+		}else{
+			console.log("error inserting apns", err);
+			callback(err, false);
+		}
+	})
+}
+
+DataManager.prototype.getAPNS = function(connection, callback){
+	connection.query('SELECT * FROM tokens', function(err, rows, fields){
+		if(!err){
+			tokens = [];
+			for(var i=0; i<rows.length; i++){
+				tokens.push(rows[i].apns)
+			}
+			callback(err, tokens);
+		}else{
+			console.log("Error while performing query");
+			callback(err, null);
+		}
+	})
+}
+
 DataManager.prototype.getEvents = function(connection, callback){
 	connection.query('SELECT eventID, title, date, imageURL,description, location from events ORDER BY date DESC', function(err, rows, fields) {
       if (!err){

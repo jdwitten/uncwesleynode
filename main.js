@@ -408,60 +408,90 @@ app.get('/calendar', function(req,res){
           calendar.prototype.authorize(JSON.parse(content), function(auth){
             bus.emit("googleCalendarAuthorized", err, auth, res)
           });
-        
         })
       }
     })
   })
 });
 
-app.get("/notifications", function(req, res){
-  // Set up apn with the APNs Auth Key
-  var apnProvider = new apn.Provider({  
-      token: {
-          key: './apns/apns.p8', // Path to the key p8 file
-          keyId: 'PDR468NBSM', // The Key ID of the p8 file (available at https://developer.apple.com/account/ios/certificate/key)
-          teamId: 'XA9HBUSBJ5', // The Team ID of your Apple Developer Account (available at https://developer.apple.com/account/#/membership/)
-      },
-      production: false // Set to true if sending a notification to a production iOS app
-  });
 
-  // Enter the device token from the Xcode console
-  var deviceToken = '369190D13A03D0DDCC77CD99A24AD64647AAE3C7405F6D174392E119BFFF57A7';
-
-  // Prepare a new notification
-  var notification = new apn.Notification();
-
-  // Specify your iOS app's Bundle ID (accessible within the project editor)
-  notification.topic = 'jdwitten.uncwesley';
-
-  // Set expiration to 1 hour from now (in case device is offline)
-  notification.expiry = Math.floor(Date.now() / 1000) + 3600;
-
-  // Set app badge indicator
-  notification.badge = 1;
-
-  // Play ping.aiff sound when the notification is received
-  notification.sound = 'ping.aiff';
-
-  // Display the following message (the actual notification text, supports emoji)
-  notification.alert = 'Hello from node.js \u270C';
-
-  // Send any extra payload data with the notification which will be accessible to your app in didReceiveRemoteNotification
-  notification.payload = {id: 123};
-
-  // Actually send the notification
-  apnProvider.send(notification, deviceToken).then(function(result) {  
-      // Check the result for any failed devices
-      console.log(result);
-      res.status(200).send(true)
-
-  });
-
-
-
+bus.on("finishedSendingNotifications",function(response){
+  response.status(200).send();
 })
 
+
+app.get("/notifications", function(req, res){
+
+
+  pool.getConnection(function(err, connection){
+    if(err){
+      console.log("Error getting connection ", err);
+      res.status(500).send()
+    }else{
+      DataManager.prototype.getAPNS(connection, function(err, tokens){
+        if(err){
+          console.log(err)
+          res.status(500).send()
+        }else{
+          // Set up apn with the APNs Auth Key
+          var apnProvider = new apn.Provider({  
+          token: {
+              key: './apns/apns.p8', // Path to the key p8 file
+              keyId: 'PDR468NBSM', // The Key ID of the p8 file (available at https://developer.apple.com/account/ios/certificate/key)
+              teamId: 'XA9HBUSBJ5', // The Team ID of your Apple Developer Account (available at https://developer.apple.com/account/#/membership/)
+            },
+            production: false // Set to true if sending a notification to a production iOS app
+          });
+
+          // Enter the device token from the Xcode console
+          var deviceToken = '';
+
+          // Prepare a new notification
+          var notification = new apn.Notification();
+
+          // Specify your iOS app's Bundle ID (accessible within the project editor)
+          notification.topic = 'jdwitten.uncwesley';
+
+          // Set expiration to 1 hour from now (in case device is offline)
+          notification.expiry = Math.floor(Date.now() / 1000) + 3600;
+
+          // Set app badge indicator
+          notification.badge = 1;
+
+          // Play ping.aiff sound when the notification is received
+          notification.sound = 'ping.aiff';
+
+          // Display the following message (the actual notification text, supports emoji)
+          notification.alert = 'Hello from node.js \u270C';
+
+          // Send any extra payload data with the notification which will be accessible to your app in didReceiveRemoteNotification
+          notification.payload = {id: 123};
+          var processed = tokens.length;
+          for(var i=0; i<tokens.length; i++){
+            deviceToken = tokens[i];
+            // Actually send the notification
+            apnProvider.send(notification, deviceToken).then(function(result) {  
+              // Check the result for any failed devices
+              if(--processed === 0 ){
+                bus.emit("finishedSendingNotifications", res);
+              }
+            });
+          }
+        }
+      })
+    }
+  })
+})
+
+app.post("/token", jsonParser, function(req, res){
+  var tokenString = req.body.token
+  pool.getConnection(function(err, connection){
+    DataManager.prototype.postAPNS(tokenString, connection, function(err,success){
+      if(success) res.status(200).send()
+      else res.status(500).send()
+    })
+  })
+})
 
 
 
