@@ -544,6 +544,8 @@ app.post("/users", jsonParser, function(req,res){
   var year = req.class;
   var major = req.major;
 
+  console.log(fname, lname, email, year, major)
+
   pool.getConnection(function(err, connection){
     DataManager.prototype.addUser(fname, lname, email, year, major, connection, function(err,success, id){
       var response = {}
