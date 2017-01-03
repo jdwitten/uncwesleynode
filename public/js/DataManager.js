@@ -34,7 +34,7 @@ var Blog = function(id, text, author, date, title){
 }
 
 DataManager.prototype.addUser = function(fname, lname, email, year, major, connection, callback){
-	connection.query("INSERT INTO users (fname, lname, email, class, major) VALUES (?, ?, ?, ?,?)", [fname, lname, email, year, major], function(err, result){
+	connection.query("INSERT INTO users SET ?", {"fname":fname, "lname":lname, "email":email, "class":year, "major":major}, function(err, result){
 		if(err){
 			console.log("error inserting user into db ", err)
 			callback(err, false, null)
