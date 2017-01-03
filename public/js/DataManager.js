@@ -40,8 +40,8 @@ DataManager.prototype.addUser = function(fname, lname, email, year, major, conne
 			callback(err, false, null)
 		}
 		else{
-			console.log("new user id", result.id)
-			callback(err, true, result.id)
+			console.log("new user id", result.insertId)
+			callback(err, true, result.insertId)
 		}
 	})
 }
