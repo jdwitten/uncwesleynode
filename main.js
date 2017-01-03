@@ -538,11 +538,11 @@ app.post("/token",jsonParser, function(req, res){
 })
 
 app.post("/users", jsonParser, function(req,res){
-  var fname = req.fname;
-  var lname = req.lname;
-  var email = req.email;
-  var year = req.class;
-  var major = req.major;
+  var fname = req.body.fname;
+  var lname = req.body.lname;
+  var email = req.body.email;
+  var year = req.body.class;
+  var major = req.body.major;
 
   console.log(fname, lname, email, year, major)
 
