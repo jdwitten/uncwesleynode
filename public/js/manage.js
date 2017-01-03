@@ -189,6 +189,7 @@ $(document).ready(function(){
     	$("#notification-spinner").addClass("active")
     	var text = $("#new_notification").val();
     	var date = new Date();
+    	date.setHours(date.getHours()-5)
     	var notification = DataManager.createNotification(0, text,date);
     	if(confirm("Are you sure you want to add this notification? It will be sent to all users of the UNC Wesley App.")==true){
     		addNotification(notification);
@@ -366,6 +367,7 @@ var getNotifications = function(){
 				notifications = [];
 				for(var i=0; i<data.length; i++){
 					var date = new Date(data[i].date);
+					date.setHours(date.getHours()+5)
 					notifications.push(DataManager.createNotification(data[i].id, data[i].text, date));
 				}
 				LoadedNotifications = notifications;
@@ -382,6 +384,7 @@ var getEvents = function(){
 				events = [];
 				for(var i=0; i<data.length; i++){
 					var date = new Date(data[i].date);
+					date.setHours(date.getHours()+5)
 					events.push(DataManager.createEvent(data[i].id, data[i].title, date, data[i].image, data[i].description, data[i].location));
 				}
 				LoadedEvents = events;
