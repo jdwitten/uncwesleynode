@@ -39,7 +39,6 @@ Calendar.prototype.authorize = function(credentials, callback) {
       Calendar.prototype.getNewToken(oauth2Client, callback);
     } else {
       oauth2Client.credentials = JSON.parse(token);
-      console.log(oauth2Client)
       callback(oauth2Client);
     }
   });
@@ -151,6 +150,7 @@ Calendar.prototype.listEvents = function(auth) {
 Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback){
   var calendarAPI = google.calendar('v3');
   var calendarList = calendarAPI.calendarList.list({ auth: auth}, function(err, calendarList){
+    console.log(err)
     var calendar = calendarList.items[2];
     var calendarID = calendar.id;
     calendarAPI.events.list({
