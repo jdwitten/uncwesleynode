@@ -395,6 +395,7 @@ app.get('/calendar', function(req,res){
   // Load client secrets from a local file.
   pool.getConnection(function(err, connection){
     DataManager.prototype.getEvents(connection, function(err, events){
+      connection.release();
       if(err){
         console.log(err);
         res.status(500).send();
@@ -404,7 +405,6 @@ app.get('/calendar', function(req,res){
             console.log('Error loading client secret file: ' + err);
             return;
           }
-
           calendar.prototype.authorize(JSON.parse(content), function(auth){
             bus.emit("googleCalendarAuthorized", err, auth, res)
           });
@@ -415,13 +415,14 @@ app.get('/calendar', function(req,res){
 });
 
 
-bus.on("finishedSendingNotifications",function(response){
+bus.on("finishedSendingNotifications",function(response, connection){
   console.log("finished sending notifications");
+  connection.release()
   response.status(200).send();
 })
 
 
-app.get("/notifications", function(req, res){
+app.post("/notifications", jsonParser, function(req, res){
 
 
   pool.getConnection(function(err, connection){
@@ -429,6 +430,12 @@ app.get("/notifications", function(req, res){
       console.log("Error getting connection ", err);
       res.status(500).send()
     }else{
+      var text = req.body.text
+      var date = new Date(req.body.date);
+      date = date.toISOString().slice(0, 19).replace('T', ' ');
+      DataManager.prototype.postNotification(text, date, connection, function(err, success){
+    
+      })
       DataManager.prototype.getAPNS(connection, function(err, tokens){
         if(err){
           console.log(err)
@@ -463,7 +470,7 @@ app.get("/notifications", function(req, res){
           notification.sound = 'ping.aiff';
 
           // Display the following message (the actual notification text, supports emoji)
-          notification.alert = 'Hello from node.js \u270C';
+          notification.alert = text;
 
           // Send any extra payload data with the notification which will be accessible to your app in didReceiveRemoteNotification
           notification.payload = {id: 123};
@@ -475,10 +482,32 @@ app.get("/notifications", function(req, res){
             apnProvider.send(notification, deviceToken).then(function(result) {  
               // Check the result for any failed devices
               if(--processed === 0 ){
-                bus.emit("finishedSendingNotifications", res);
+                bus.emit("finishedSendingNotifications", res, connection);
               }
             });
           }
+        }
+      })
+    }
+  })
+})
+
+app.get("/notifications", function(req, res){
+  pool.getConnection(function(err, connection){
+    if(err){
+      console.log("error getting connection", err)
+      res.status(500).send()
+    }
+    else{
+      DataManager.prototype.getNotifications(connection, function(err, notifications){
+        if(err){
+          console.log("error getting notifications ", err)
+          connection.release()
+          res.status(500).send()
+        }
+        else{
+          connection.release();
+          res.status(200).send(notifications)
         }
       })
     }
@@ -493,10 +522,16 @@ app.post("/token",jsonParser, function(req, res){
     DataManager.prototype.postAPNS(tokenString, connection, function(err,success){
       if(success){
         console.log("successfully inserted token")
+        connection.release()
         res.status(200).send()
       }
-      else res.status(500).send()
+      else{
+        res.status(500).send()
+        connection.release()
+      } 
+
     })
+
   })
 })
 

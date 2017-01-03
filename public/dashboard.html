@@ -69,6 +69,33 @@
 	</div>
 </div>
 <div id="users" class="col s12">Users</div>
-<div id="notifications" class="col s12">Notifications</div>
+<div id="notifications" class="col s12">
+	<div class="container">
+		<div class="row">
+			<h1 class="col s10">Notifications</h1>
+			  <div class="preloader-wrapper small">
+    			<div class="spinner-layer spinner-green" id="notification-spinner">
+      				<div class="circle-clipper left">
+        				<div class="circle"></div>
+      				</div>
+      				<div class="gap-patch">
+        				<div class="circle"></div>
+      				</div>
+      			<div class="circle-clipper right">
+        			<div class="circle"></div>
+      			</div>
+      			</div>
+  			</div>
+		</div>
+		<div class="input-field col s12">
+          	<textarea id="new_notification" class="materialize-textarea"></textarea>
+          	<label for="textarea1">New Notification</label>
+        </div>
+         <a class="btn-floating btn-large waves-effect waves-light red" id="add-notification"><i class="material-icons">add</i></a>
+         <div class="row"></div>
+		<ul class="collection" id="notification-collection">
+		</ul>
+	</div>
+</div>
 </body>
 </html>

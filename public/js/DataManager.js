@@ -2,6 +2,11 @@ var DataManager = function(){
 
 }
 
+var Notification = function(id, text, date){
+	this.id = id;
+	this.text = text;
+	this.date = date;
+}
 
 var Event = function(id, title, date, imageURL, description, location){
 	this.id = id;
@@ -28,6 +33,22 @@ var Blog = function(id, text, author, date, title){
 	this.title = title;
 }
 
+DataManager.prototype.getNotifications = function(connection, callback){
+	connection.query("SELECT id, text, date FROM notifications ORDER BY date DESC", function(err, rows, fields){
+		if(err){
+			console.log("error selecting notifications")
+			callback(err, null)
+		}
+		else{
+			console.log(rows)
+			var notifications = []
+			for(var i=0; i<rows.length; i++){
+				notifications.push(DataManager.prototype.createNotification(rows[i].id, rows[i].text, rows[i].date))
+			}
+			return callback(err, notifications)
+		}
+	})
+}
 DataManager.prototype.postAPNS = function(tokenString, connection, callback){
 	connection.query("INSERT INTO tokens (apns) VALUES(?)", [tokenString], function(err, rows, fields){
 		if(!err){
@@ -37,6 +58,22 @@ DataManager.prototype.postAPNS = function(tokenString, connection, callback){
 			callback(err, false);
 		}
 	})
+}
+
+DataManager.prototype.postNotification = function(text, date, connection, callback){
+	connection.query("INSERT INTO notifications(text, date) VALUES(?, ?)", [text, date], function(err, rows, fields){
+		if(err){
+			console.log("error executing query", err);
+			callback(err, false);
+		}
+		else{
+			callback(err, true);
+		}
+	})
+}
+
+DataManager.prototype.createNotification = function(id, text, date){
+	return new Notification(id, text, date);
 }
 
 DataManager.prototype.getAPNS = function(connection, callback){

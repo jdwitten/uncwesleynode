@@ -2,6 +2,7 @@ var LoadedEvents;
 var LoadedPrayers;
 var LoadedBlogs;
 var LoadedUsers;
+var LoadedNotifications;
 var EventFilter = 1;
 var PrayerFilter = 1;
 var DataManager = new DataManager();
@@ -30,6 +31,9 @@ $(document).ready(function(){
 	$(document).on("receivedBlogs", function(event, blogs){
 		buildBlogs(blogs);
 	});
+	$(document).on("receivedNotifications", function(event, notifications){
+		buildNotifications(notifications);
+	});
 	$(document).on("input-error", function(event, message){
 		console.log(message)
 		Materialize.toast(message, 4000,"red");
@@ -39,6 +43,10 @@ $(document).ready(function(){
 	})
 	$(document).on("added-blog", function(event, message){
 		Materialize.toast("Successfully added a blog!", 4000, "green")
+	})
+	$(document).on("added-notification", function(event, message){
+		$("#notification-spinner").removeClass("active")
+		Materialize.toast("Successfully added a notification!", 4000, "green")
 	})
 	$(document).on("edited-event", function(event, message){
 		Materialize.toast("Successfully edited an event!", 4000, "green")
@@ -177,6 +185,16 @@ $(document).ready(function(){
     	else return;
     })
 
+    $(document).on("click", "#add-notification", function(){
+    	$("#notification-spinner").addClass("active")
+    	var text = $("#new_notification").val();
+    	var date = new Date();
+    	var notification = DataManager.createNotification(0, text,date);
+    	if(confirm("Are you sure you want to add this notification? It will be sent to all users of the UNC Wesley App.")==true){
+    		addNotification(notification);
+    	}
+    })
+
     $(document).on("click",".delete-event", function(){
     	console.log("clicked delete event");
     	var eventContainer = $(this).parent().parent().parent().parent().parent()
@@ -233,6 +251,7 @@ $(document).ready(function(){
 	getEvents();
 	getPrayers();
 	getBlogs();
+	getNotifications();
 
 })
 
@@ -285,6 +304,24 @@ var addBlog = function(blog){
 	});
 }
 
+var addNotification = function(notification){
+	var notificationData = JSON.stringify({text: notification.text, date: notification.date.toISOString()});
+    $.ajax({
+		url: "/notifications",
+		headers:{
+			"Content-Type":"application/json"
+		},
+		data: notificationData,
+		datatype: 'application/json',
+		success: function(data){
+			getNotifications();
+			$(document).trigger("added-notification");
+			$("#new_notification").val("")
+		},
+		type: 'POST'
+	});
+}
+
 var deleteBlog = function(blogID){
 	var deleteData = JSON.stringify({id: blogID});
 	console.log(deleteData);
@@ -318,6 +355,24 @@ var editBlog = function(blog){
 		},
 		type: 'PUT'
 	});
+}
+
+var getNotifications = function(){
+	$.ajax({
+			url: "/notifications",
+			datatype: 'jsonp',
+			success: function(data){
+				console.log(data)
+				notifications = [];
+				for(var i=0; i<data.length; i++){
+					var date = new Date(data[i].date);
+					notifications.push(DataManager.createNotification(data[i].id, data[i].text, date));
+				}
+				LoadedNotifications = notifications;
+				$(document).trigger("receivedNotifications", [LoadedNotifications]);
+			},
+			type: 'GET'
+		});
 }
 var getEvents = function(){
 	$.ajax({
@@ -407,6 +462,18 @@ var deletePrayer = function(prayerID){
 		});
 }
 
+var buildNotifications = function(notifications){
+	console.log("build notifications:", notifications)
+	$("#notification-collection").empty();
+	var element, header, body, row;
+	for(var i=0; i<notifications.length;i++){
+		var notification = notifications[i];
+		element = $("<li class='collection-item blue-grey lighten-5'></li>");
+		element.append("<h3>"+ $.datepicker.formatDate("dd MM, yy", notification.date)+"</h3>");
+		element.append("<p>"+notification.text+"</p>");
+		$("#notification-collection").append(element);
+	}
+}
 
 var buildBlogs = function(blogs, filter){
 	console.log("build blogs:", blogs)
