@@ -33,6 +33,18 @@ var Blog = function(id, text, author, date, title){
 	this.title = title;
 }
 
+DataManager.prototype.addUser = function(fname, lname, email, year, major, connection, callback){
+	connection.query("INSERT INTO users (fname, lname, email, class, major) VALUES (?, ?, ?, ?,?)", [fname, lname, email, year, major], function(err, result){
+		if(err){
+			console.log("error inserting user into db ", err)
+			callback(err, false, null)
+		}
+		else{
+			callback(err, true, result.id)
+		}
+	})
+}
+
 DataManager.prototype.getNotifications = function(connection, callback){
 	connection.query("SELECT id, text, date FROM notifications ORDER BY date DESC", function(err, rows, fields){
 		if(err){

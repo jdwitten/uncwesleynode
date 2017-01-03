@@ -402,9 +402,11 @@ app.get('/calendar', function(req,res){
       }else{
         fs.readFile('client_secret.json', function processClientSecrets(err, content) {
           if (err) {
+            connection.release();
             console.log('Error loading client secret file: ' + err);
             return;
           }
+          connection.release()
           calendar.prototype.authorize(JSON.parse(content), function(auth){
             bus.emit("googleCalendarAuthorized", err, auth, res)
           });
@@ -524,6 +526,33 @@ app.post("/token",jsonParser, function(req, res){
         console.log("successfully inserted token")
         connection.release()
         res.status(200).send()
+      }
+      else{
+        res.status(500).send()
+        connection.release()
+      } 
+
+    })
+
+  })
+})
+
+app.post("/users", jsonParser, function(req,res){
+  var fname = req.fname;
+  var lname = req.lname;
+  var email = req.email;
+  var year = req.class;
+  var major = req.major;
+
+  pool.getConnection(function(err, connection){
+    DataManager.prototype.addUser(fname, lname, email, year, major, connection, function(err,success, id){
+      var response = {}
+      if(success){
+        console.log("successfully inserted User")
+        response.success = true;
+        response.id = id;
+        connection.release()
+        res.status(200).send(response)
       }
       else{
         res.status(500).send()
