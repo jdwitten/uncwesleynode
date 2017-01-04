@@ -105,7 +105,6 @@ DataManager.prototype.getAPNS = function(connection, callback){
 }
 
 DataManager.prototype.getEvents = function(connection, minDate, callback){
-	console.log(minDate)
 	connection.query('SELECT eventID, title, date, imageURL,description, location from events WHERE date > ? ORDER BY date DESC', [minDate], function(err, rows, fields) {
       if (!err){
         events = [];

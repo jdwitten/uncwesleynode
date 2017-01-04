@@ -185,7 +185,7 @@ app.delete('/events', jsonParser, function(req, res){
 
 
 app.get('/events', function (req, res) {
-  console.log(req.body)
+  console.log(req.query)
   var manager = new DataManager();
   pool.getConnection(function(err, connection){
     if(!err) {
