@@ -377,10 +377,13 @@ var getNotifications = function(){
 		});
 }
 var getEvents = function(){
+	var data = JSON.stringify({date: "1970-01-01 00:00:01"})
 	$.ajax({
 			url: "/events",
-			datatype: 'jsonp',
+			datatype: 'application/json',
+			data: data,
 			success: function(data){
+				console.log(data)
 				events = [];
 				for(var i=0; i<data.length; i++){
 					var date = new Date(data[i].date);

@@ -104,8 +104,8 @@ DataManager.prototype.getAPNS = function(connection, callback){
 	})
 }
 
-DataManager.prototype.getEvents = function(connection, callback){
-	connection.query('SELECT eventID, title, date, imageURL,description, location from events ORDER BY date DESC', function(err, rows, fields) {
+DataManager.prototype.getEvents = function(connection, minDate, callback){
+	connection.query('SELECT eventID, title, date, imageURL,description, location from events WHERE date > ? ORDER BY date DESC', [minDate], function(err, rows, fields) {
       if (!err){
         events = [];
         for(var i=0; i<rows.length; i++){

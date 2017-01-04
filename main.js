@@ -184,7 +184,7 @@ app.delete('/events', jsonParser, function(req, res){
 
 
 
-app.get('/events', function (req, res) {
+app.get('/events', jsonParser, function (req, res) {
   var manager = new DataManager();
   pool.getConnection(function(err, connection){
     if(!err) {
@@ -194,7 +194,8 @@ app.get('/events', function (req, res) {
       console.log("Error connecting database ... nn");
       connection.release()    
     }
-    manager.getEvents(connection, function(err, events){
+    var minDate = req.body.date
+    manager.getEvents(connection, minDate, function(err, events){
       connection.release()
       if(err){
         res.status(500).send()
