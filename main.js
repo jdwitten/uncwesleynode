@@ -196,6 +196,10 @@ app.get('/events', function (req, res) {
       connection.release()    
     }
     var minDate = req.query.date
+    if(minDate==="now"){
+      var date = new Date();
+      minDate = date.toISOString().slice(0, 19).replace('T', ' ');
+    }
     console.log(minDate)
     manager.getEvents(connection, minDate, function(err, events){
       connection.release()
