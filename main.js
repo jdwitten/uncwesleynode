@@ -215,6 +215,11 @@ app.get('/events', function (req, res) {
 
 app.get('/prayers', function (req, res) {
   var manager = new DataManager();
+  var minDate = req.query.date
+  if(minDate==="now"){
+    var date = new Date()
+    minDate = date.toISOString().slice(0, 19).replace('T', ' ');
+  }
   pool.getConnection(function(err, connection){
     if(!err) {
       console.log("Database is connected ... nn");    
@@ -222,7 +227,7 @@ app.get('/prayers', function (req, res) {
       console.log(err)
       console.log("Error connecting database ... nn");    
     }
-    connection.query('SELECT prayerID, prayerDate, content, fname, lname from prayers AS P JOIN users AS U ON P.senderID = U.userID ORDER BY prayerDate DESC', function(err, rows, fields) {
+    connection.query('SELECT prayerID, prayerDate, content, fname, lname from prayers WHERE prayerDate > ? AS P JOIN users AS U ON P.senderID = U.userID ORDER BY prayerDate DESC', [minDate], function(err, rows, fields) {
       if (!err){
         prayers = [];
         for(var i=0; i<rows.length; i++){

@@ -399,7 +399,7 @@ var getEvents = function(){
 var getPrayers = function(){
 	$.ajax({
 			url: "/prayers",
-			datatype: 'jsonp',
+			data: {date: "1970-01-01 00:00:01"},
 			success: function(data){
 				console.log(data);
 				prayers = [];
