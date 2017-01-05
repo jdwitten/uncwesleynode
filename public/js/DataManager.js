@@ -33,6 +33,18 @@ var Blog = function(id, text, author, date, title){
 	this.title = title;
 }
 
+DataManager.prototype.postPrayer = function(id, content, connection, callback){
+	connection.query("INSERT INTO prayers (senderID, content, prayerDate) VALUES(?, ?, NOW())", [id, content], function(err, result){
+		if(err){
+			console.log("error inserting user into db ", err)
+			callback(err, false, null)
+		}
+		else{
+			callback(err, true)
+		}
+	})
+}
+
 DataManager.prototype.addUser = function(fname, lname, email, year, major, connection, callback){
 	connection.query("INSERT INTO users SET ?", {"fname":fname, "lname":lname, "email":email, "class":year, "major":major}, function(err, result){
 		if(err){

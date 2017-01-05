@@ -246,6 +246,28 @@ app.get('/prayers', function (req, res) {
   })
 });
 
+app.post("/prayers",jsonParser, function(req, res){
+  var id = req.body.id
+  var content = req.body.content
+
+  pool.getConnection(function(err, connection){
+    if(err){
+      console.log(err)
+      res.status(500).send()
+    }
+    else{
+      DataManager.prototype.postPrayer(content, id, connection, function(err, success){
+        if(err){
+          console.log(err)
+          res.status(500).send()
+        }else{
+          res.status(200).send({success:true})
+        }
+      })
+    }
+  })
+})
+
 
 app.delete('/prayers', jsonParser, function(req, res){
   var id = req.body.id;
