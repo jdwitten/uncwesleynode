@@ -218,7 +218,7 @@ app.get('/prayers', function (req, res) {
   var minDate = req.query.date
   if(minDate==="now"){
     var date = new Date()
-    date.setDays(date.getDays()+14)
+    date.setDays(date.getDate()+14)
     minDate = date.toISOString().slice(0, 19).replace('T', ' ');
   }
   pool.getConnection(function(err, connection){
