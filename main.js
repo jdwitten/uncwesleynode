@@ -427,9 +427,10 @@ bus.on("googleCalendarAuthorized", function(err, auth,res){
 
 app.get('/calendar', function(req,res){
 
+  var date = new Date()
   // Load client secrets from a local file.
   pool.getConnection(function(err, connection){
-    DataManager.prototype.getEvents(connection, function(err, events){
+    DataManager.prototype.getEvents(connection, date, function(err, events){
       connection.release();
       if(err){
         console.log(err);

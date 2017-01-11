@@ -265,7 +265,7 @@ function validateEvent(event){
     	$(document).trigger("input-error", ["There was an error with the event location. Could not edit this event!"]);
     	return false;
    	}
-    if(event.description.length<1 || event.description.length > 40){
+    if(event.description.length<1 || event.description.length > 1000){
     	$(document).trigger("input-error", ["There was an error with the event description. Could not edit this event!"]);
     	return false;
     }
