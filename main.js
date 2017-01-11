@@ -438,11 +438,9 @@ app.get('/calendar', function(req,res){
       }else{
         fs.readFile('client_secret.json', function processClientSecrets(err, content) {
           if (err) {
-            connection.release();
             console.log('Error loading client secret file: ' + err);
             return;
           }
-          connection.release()
           calendar.prototype.authorize(JSON.parse(content), function(auth){
             bus.emit("googleCalendarAuthorized", err, auth, res)
           });
