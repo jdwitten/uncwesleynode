@@ -284,7 +284,7 @@ var syncCalendar = function(){
 			console.log(response)
 			if(response.url){
 				$('#authenticate_modal').show()
-				$("#google_url").attr("href", data.url)
+				$("#google_url").attr("href", response.url)
 				return
 			}
 			console.log("successfully synced calendar")
