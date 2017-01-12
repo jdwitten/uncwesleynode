@@ -533,6 +533,8 @@ app.post("/notifications", jsonParser, function(req, res){
           // Display the following message (the actual notification text, supports emoji)
           notification.alert = text;
 
+          notification.contentAvailable = 1;
+
           // Send any extra payload data with the notification which will be accessible to your app in didReceiveRemoteNotification
           notification.payload = {id: 123};
           var processed = tokens.length;
