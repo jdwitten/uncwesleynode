@@ -45,7 +45,7 @@ Calendar.prototype.authorize = function(credentials, res, callback) {
       var token = JSON.parse(token);
       var now = new Date()
       if(token.expiry_date < now.getTime()){
-        Calendar.prototype.getNewToken(oauth2client, res, callback)
+        Calendar.prototype.getNewToken(oauth2Client, res, callback)
         return
       } 
       oauth2Client.credentials = token;
