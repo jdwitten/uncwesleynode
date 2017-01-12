@@ -468,7 +468,7 @@ app.get("/google_auth", function(req, res){
     oauth2Client.getToken(code, function (err, token) {
       calendar.prototype.storeToken(token)
       res.redirect("/calendar")
-    }
+    })
   });
 })
 
