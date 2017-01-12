@@ -68,7 +68,7 @@ Calendar.prototype.getNewToken = function(oauth2Client, res, callback) {
     access_type: 'offline',
     scope: SCOPES
   });
-  res.setHeader('Access-Control-Allow-Origin', 'https://uncwesleynode.herokuapp.com');
+  res.setHeader('Access-Control-Allow-Origin', 'https://accounts.google.com');
   res.redirect(authUrl)
 }
 
