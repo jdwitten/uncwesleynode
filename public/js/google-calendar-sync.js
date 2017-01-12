@@ -40,7 +40,7 @@ Calendar.prototype.authorize = function(credentials, res, callback) {
       return
     } else {
       oauth2Client.setCredentials({
-        access_token: JSON.parse(token);
+        access_token: JSON.parse(token)
       })
       var token = JSON.parse(token);
       var now = new Date()
