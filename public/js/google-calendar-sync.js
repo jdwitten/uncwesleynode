@@ -48,7 +48,7 @@ Calendar.prototype.authorize = function(credentials, res, callback) {
         Calendar.prototype.getNewToken(oauth2client, res, callback)
         return
       } 
-      oauth2Client.credentials = JSON.parse(token);
+      oauth2Client.credentials = token;
       callback(oauth2Client);
     }
   });
