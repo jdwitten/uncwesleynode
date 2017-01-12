@@ -69,7 +69,7 @@ Calendar.prototype.getNewToken = function(oauth2Client, res, callback) {
     scope: SCOPES
   });
   var response = {url: authUrl}
-  res.send(JSON.stringify(response))
+  res.send(response)
 }
 
 /**
