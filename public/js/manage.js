@@ -394,7 +394,7 @@ var getEvents = function(){
 				events = [];
 				for(var i=0; i<data.length; i++){
 					var date = new Date(data[i].date);
-					date.setHours(date.getHours()+5)
+					//date.setHours(date.getHours())
 					events.push(DataManager.createEvent(data[i].id, data[i].title, date, data[i].image, data[i].description, data[i].location));
 				}
 				LoadedEvents = events;
