@@ -18,7 +18,7 @@ var Calendar = function(){
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
-Calendar.prototype.authorize = function(credentials, callback) {
+Calendar.prototype.authorize = function(credentials, res, callback) {
   var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   /*
   var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
@@ -36,8 +36,18 @@ Calendar.prototype.authorize = function(credentials, callback) {
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, function(err, token) {
     if (err) {
-      Calendar.prototype.getNewToken(oauth2Client, callback);
+      Calendar.prototype.getNewToken(oauth2Client,res, callback);
+      return
     } else {
+      oauth2Client.setCredentials({
+        access_token: JSON.parse(token);
+      })
+      var token = JSON.parse(token);
+      var now = new Date()
+      if(token.expiry_date > now.getTime()){
+        Calendar.prototype.getNewToken(oauth2client, res, callback)
+        return
+      } 
       oauth2Client.credentials = JSON.parse(token);
       callback(oauth2Client);
     }
@@ -52,29 +62,13 @@ Calendar.prototype.authorize = function(credentials, callback) {
  * @param {getEventsCallback} callback The callback to call with the authorized
  *     client.
  */
-Calendar.prototype.getNewToken = function(oauth2Client, callback) {
+Calendar.prototype.getNewToken = function(oauth2Client, res, callback) {
   var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   var authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES
   });
-  console.log('Authorize this app by visiting this url: ', authUrl);
-  var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  rl.question('Enter the code from that page here: ', function(code) {
-    rl.close();
-    oauth2Client.getToken(code, function(err, token) {
-      if (err) {
-        console.log('Error while trying to retrieve access token', err);
-        return;
-      }
-      oauth2Client.credentials = token;
-      storeToken(token);
-      callback(oauth2Client);
-    });
-  });
+  res.redirect(authUrl)
 }
 
 /**
@@ -84,8 +78,8 @@ Calendar.prototype.getNewToken = function(oauth2Client, callback) {
  */
 Calendar.prototype.storeToken = function(token) {
   var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
-  process.env.USERPROFILE) + '/.credentials/';
-  var TOKEN_PATH = TOKEN_DIR + 'calendar-nodejs-quickstart.json';
+    process.env.USERPROFILE) + '/';
+  var TOKEN_PATH = TOKEN_DIR + 'token.json';
   try {
     fs.mkdirSync(TOKEN_DIR);
   } catch (err) {

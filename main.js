@@ -9,6 +9,8 @@ var fs = require('fs');
 var bus = require("./public/js/event-bus");
 var pool = require("./public/js/db-pool");
 var apn = require("apn");
+var google = require('googleapis');
+var googleAuth = require('google-auth-library');
 
 app.use(express.static('public'));
 
@@ -441,7 +443,7 @@ app.get('/calendar', function(req,res){
             console.log('Error loading client secret file: ' + err);
             return;
           }
-          calendar.prototype.authorize(JSON.parse(content), function(auth){
+          calendar.prototype.authorize(JSON.parse(content), res, function(auth){
             bus.emit("googleCalendarAuthorized", err, auth, res)
           });
         })
@@ -449,6 +451,26 @@ app.get('/calendar', function(req,res){
     })
   })
 });
+
+app.get("/google_auth", function(req, res){
+  var code = req.query.code
+  fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+    if (err) {
+      console.log('Error loading client secret file: ' + err);
+      return;
+    }
+    var credentials = JSON.parse(content)
+    var clientSecret = credentials.web.client_secret;
+    var clientId = credentials.web.client_id;
+    var redirectUrl = credentials.web.redirect_uris[0];
+    var auth = new googleAuth();
+    var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+    oauth2Client.getToken(code, function (err, token) {
+      calendar.prototype.storeToken(token)
+      res.redirect("/calendar")
+    }
+  });
+})
 
 
 bus.on("finishedSendingNotifications",function(response, connection){
