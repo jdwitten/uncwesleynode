@@ -280,8 +280,9 @@ var syncCalendar = function(){
 		},
 		datatype: 'application/json',
 		success: function(data){
-			console.log(data)
-			if(data.url){
+			var response = JSON.parse(data)
+			console.log(response)
+			if(response.url){
 				$('#authenticate_modal').modal('open')
 				$("#google_url").attr("href", data.url)
 				return
