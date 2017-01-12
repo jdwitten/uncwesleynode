@@ -528,10 +528,10 @@ app.post("/notifications", jsonParser, function(req, res){
           notification.badge = 1;
 
           // Play ping.aiff sound when the notification is received
-          notification.sound = 'ping.aiff';
+          //notification.sound = 'ping.aiff';
 
           // Display the following message (the actual notification text, supports emoji)
-          notification.alert = text;
+          //notification.alert = text;
 
           notification.contentAvailable = 1;
 
