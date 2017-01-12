@@ -280,6 +280,11 @@ var syncCalendar = function(){
 		},
 		datatype: 'application/json',
 		success: function(data){
+			if(data.url){
+				$('#authenticate_modal').modal('open')
+				$("#google_url").attr("href", data.url)
+				return
+			}
 			console.log("successfully synced calendar")
 			getEvents();
 			$(document).trigger("synced-calendar");

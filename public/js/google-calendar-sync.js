@@ -68,10 +68,8 @@ Calendar.prototype.getNewToken = function(oauth2Client, res, callback) {
     access_type: 'offline',
     scope: SCOPES
   });
-  res.setHeader('Access-Control-Allow-Origin', 'accounts.google.com');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.redirect(authUrl)
+  var response = {url: authUrl}
+  res.send(JSON.stringify(response))
 }
 
 /**
