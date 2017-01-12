@@ -45,6 +45,7 @@ Calendar.prototype.authorize = function(credentials, res, callback) {
       var token = JSON.parse(token);
       var now = new Date()
       if(token.expiry_date < now.getTime()){
+        console.log("get new token")
         Calendar.prototype.getNewToken(oauth2Client, res, callback)
         return
       } 
@@ -69,6 +70,7 @@ Calendar.prototype.getNewToken = function(oauth2Client, res, callback) {
     scope: SCOPES
   });
   var response = {url: authUrl}
+  console.log("sending url")
   res.send(response)
 }
 
@@ -78,6 +80,7 @@ Calendar.prototype.getNewToken = function(oauth2Client, res, callback) {
  * @param {Object} token The token to store to disk.
  */
 Calendar.prototype.storeToken = function(token) {
+  console.log("storing token")
   var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/';
   var TOKEN_PATH = TOKEN_DIR + 'token.json';

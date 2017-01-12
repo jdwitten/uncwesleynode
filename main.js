@@ -444,6 +444,7 @@ app.get('/calendar', function(req,res){
             return;
           }
           calendar.prototype.authorize(JSON.parse(content), res, function(auth){
+            console.log("google calendar authorized")
             bus.emit("googleCalendarAuthorized", err, auth, res)
           });
         })
@@ -453,6 +454,7 @@ app.get('/calendar', function(req,res){
 });
 
 app.get("/google_auth", function(req, res){
+  console.log("google auth callback")
   var code = req.query.code
   fs.readFile('client_secret.json', function processClientSecrets(err, content) {
     if (err) {
@@ -466,6 +468,7 @@ app.get("/google_auth", function(req, res){
     var auth = new googleAuth();
     var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
     oauth2Client.getToken(code, function (err, token) {
+      console.log("got new token")
       calendar.prototype.storeToken(token)
       res.redirect("/calendar")
     })
