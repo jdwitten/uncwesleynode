@@ -34,7 +34,7 @@ var Blog = function(id, text, author, date, title){
 }
 
 DataManager.prototype.deleteNotification = function(id, connection, callback){
-	connection.query("DELETE FROM devotions WHERE devotionID = ?", [id], function(err, result){
+	connection.query("DELETE FROM notifications WHERE id = ?", [id], function(err, result){
 		if(err){
 			callback(err, false)
 		}else{
