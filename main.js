@@ -580,6 +580,29 @@ app.get("/notifications", function(req, res){
   })
 })
 
+app.delete("/notifications", jsonParser, function(req, res){
+  var id = req.body.id
+  pool.getConnection(function(err, connection){
+    if(err){
+      console.log("error getting connection")
+      res.status(500).send()
+    }
+    else{
+      DataManager.prototype.deleteNotification(id, connection, function(err, success){
+        if(success){
+          connection.release()
+          res.status(200).send()
+        }
+        else{
+          console.log("unable to delete notification")
+          res.status(500).send()
+        }
+      })
+    }
+  })
+
+})
+
 app.post("/token",jsonParser, function(req, res){
   console.log(req.body)
   var tokenString = req.body.token

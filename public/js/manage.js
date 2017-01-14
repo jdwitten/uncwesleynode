@@ -60,6 +60,9 @@ $(document).ready(function(){
 	$(document).on("deleted-prayer", function(event){
 		Materialize.toast("Successfully deleted a prayer!", 4000, "green");
 	})
+	$(document).on("deleted-notification", function(event){
+		Materialize.toast("Successfully deleted a notification!", 4000, "green");
+	})
 	$(document).on("deleted-blog", function(event){
 		Materialize.toast("Successfully deleted a blog!", 4000, "green");
 	})
@@ -249,6 +252,13 @@ $(document).ready(function(){
     	}
     	else return;
 	})
+	$(document).on("click", ".delete-notification", function(event){
+		var notificationContainer = $(this).parent().parent()
+		var index = notificationContainer.index()
+		if(confirm("Are you sure you want to delete this notification?")==true){
+			deleteNotification(LoadedNotifications[index].id);
+		}
+	})
 	
 	getEvents();
 	getPrayers();
@@ -331,6 +341,23 @@ var addNotification = function(notification, push){
 		},
 		type: 'POST'
 	});
+}
+
+var deleteNotification = function(id){
+	var deleteData = JSON.stringify({id: id});
+	$.ajax({
+			url: "/notifications",
+			datatype: 'application/json',
+			headers:{
+				"Content-Type":"application/json"
+			},
+			data: deleteData,
+			success: function(data){
+				getNotifications();
+				$(document).trigger("deleted-notification");
+			},
+			type: 'DELETE'
+		});
 }
 
 var deleteBlog = function(blogID){
@@ -484,7 +511,7 @@ var buildNotifications = function(notifications){
 	for(var i=0; i<notifications.length;i++){
 		var notification = notifications[i];
 		element = $("<li class='collection-item blue-grey lighten-5'></li>");
-		element.append("<h3>"+ $.datepicker.formatDate("dd MM, yy", notification.date)+"</h3>");
+		element.append("<div class='row'><h3 class='col s6'>"+ $.datepicker.formatDate("dd MM, yy", notification.date)+"</h3><div class='col s2 center-align'><a class='btn-floating btn-small waves-effect waves-light red valign delete-notification'><i class='material-icons'>delete</i></a></div></div>");
 		element.append("<p>"+notification.text+"</p>");
 		$("#notification-collection").append(element);
 	}

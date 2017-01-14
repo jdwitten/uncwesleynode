@@ -33,6 +33,16 @@ var Blog = function(id, text, author, date, title){
 	this.title = title;
 }
 
+DataManager.prototype.deleteNotification = function(id, connection, callback){
+	connection.query("DELETE FROM devotions WHERE devotionID = ?", [id], function(err, result){
+		if(err){
+			callback(err, false)
+		}else{
+			callback(err, true)
+		}
+	})
+}
+
 DataManager.prototype.postPrayer = function(content, id, connection, callback){
 	connection.query("INSERT INTO prayers (senderID, content, prayerDate) VALUES(?, ?, NOW())", [id, content], function(err, result){
 		if(err){
