@@ -253,7 +253,8 @@ $(document).ready(function(){
     	else return;
 	})
 	$(document).on("click", ".delete-notification", function(event){
-		var notificationContainer = $(this).parent().parent()
+		var notificationContainer = $(this).parent().parent().parent()
+		console.log(notificationContainer)
 		var index = notificationContainer.index()
 		console.log("delete notification", index)
 		if(confirm("Are you sure you want to delete this notification?")==true){
