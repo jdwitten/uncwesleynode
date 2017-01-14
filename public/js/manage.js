@@ -315,6 +315,7 @@ var addBlog = function(blog){
 }
 
 var addNotification = function(notification, push){
+	console.log("send push notification", push)
 	var notificationData = JSON.stringify({text: notification.text, date: notification.date.toISOString(), push: push});
     $.ajax({
 		url: "/notifications",
