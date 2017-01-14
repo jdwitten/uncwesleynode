@@ -75,7 +75,6 @@ DataManager.prototype.getNotifications = function(connection, callback){
 			callback(err, null)
 		}
 		else{
-			console.log(rows)
 			var notifications = []
 			for(var i=0; i<rows.length; i++){
 				notifications.push(DataManager.prototype.createNotification(rows[i].id, rows[i].text, rows[i].date))

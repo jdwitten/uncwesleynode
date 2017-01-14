@@ -255,6 +255,7 @@ $(document).ready(function(){
 	$(document).on("click", ".delete-notification", function(event){
 		var notificationContainer = $(this).parent().parent()
 		var index = notificationContainer.index()
+		console.log("delete notification", index)
 		if(confirm("Are you sure you want to delete this notification?")==true){
 			deleteNotification(LoadedNotifications[index].id);
 		}
