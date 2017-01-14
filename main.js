@@ -491,6 +491,7 @@ app.post("/notifications", jsonParser, function(req, res){
       console.log("Error getting connection ", err);
       res.status(500).send()
     }else{
+      var push = req.body.push
       var text = req.body.text
       var date = new Date(req.body.date);
       date = date.toISOString().slice(0, 19).replace('T', ' ');
@@ -531,9 +532,11 @@ app.post("/notifications", jsonParser, function(req, res){
           //notification.sound = 'ping.aiff';
 
           // Display the following message (the actual notification text, supports emoji)
-          notification.alert = text;
-
-          notification.contentAvailable = 1;
+          if(push){
+             notification.alert = text;
+          }else{
+            notification.contentAvailable = 1;
+          }
 
           // Send any extra payload data with the notification which will be accessible to your app in didReceiveRemoteNotification
           notification.payload = {id: 123};

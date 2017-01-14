@@ -191,8 +191,9 @@ $(document).ready(function(){
     	var date = new Date();
     	date.setHours(date.getHours()-5)
     	var notification = DataManager.createNotification(0, text,date);
+    	var push = $("#push").val()
     	if(confirm("Are you sure you want to add this notification? It will be sent to all users of the UNC Wesley App.")==true){
-    		addNotification(notification);
+    		addNotification(notification, push);
     	}
     })
 
@@ -313,8 +314,8 @@ var addBlog = function(blog){
 	});
 }
 
-var addNotification = function(notification){
-	var notificationData = JSON.stringify({text: notification.text, date: notification.date.toISOString()});
+var addNotification = function(notification, push){
+	var notificationData = JSON.stringify({text: notification.text, date: notification.date.toISOString(), push: push});
     $.ajax({
 		url: "/notifications",
 		headers:{
