@@ -506,14 +506,11 @@ app.post("/notifications", jsonParser, function(req, res){
           // Set up apn with the APNs Auth Key
           var apnProvider = new apn.Provider({  
           token: {
-              key: './apns/apns.p12', // Path to the key p8 file
+              key: './apns/apns.p8', // Path to the key p8 file
               keyId: 'HY9PVZU369', // The Key ID of the p8 file (available at https://developer.apple.com/account/ios/certificate/key)
               teamId: 'XA9HBUSBJ5', // The Team ID of your Apple Developer Account (available at https://developer.apple.com/account/#/membership/)
             },
             production: true, // Set to true if sending a notification to a production iOS app
-            cert: './apns/aps.cer',
-            key: './apns/key.pem',
-            passphrase: ''
           });
 
           // Enter the device token from the Xcode console
