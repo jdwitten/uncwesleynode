@@ -153,13 +153,14 @@ Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback)
     var calendar = calendarList.items[0];
     var calendarID = calendar.id;
     console.log(calendar)
+    var now = new Date()
     calendarAPI.events.list({
-    auth: auth,
-    calendarId: calendarID,
-    timeMin: (new Date()).toISOString(),
-    maxResults: 10,
-    singleEvents: true,
-    orderBy: 'startTime'
+      auth: auth,
+      calendarId: calendarID,
+      timeMin: now.toISOString(),
+      timeMax: now.setDate(now.getDate()+7),
+      singleEvents: true,
+      orderBy: 'startTime'
   }, function(err, response) {
     if (err) {
       console.log('The API returned an error: ' + err);
