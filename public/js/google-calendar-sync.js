@@ -149,7 +149,7 @@ Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback)
   var calendarAPI = google.calendar('v3');
   var calendarList = calendarAPI.calendarList.list({ auth: auth}, function(err, calendarList){
     console.log(err)
-    var calendar = calendarList.items[2];
+    var calendar = calendarList.items[0];
     var calendarID = calendar.id;
     calendarAPI.events.list({
     auth: auth,

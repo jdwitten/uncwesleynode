@@ -513,7 +513,7 @@ var buildNotifications = function(notifications){
 	for(var i=0; i<notifications.length;i++){
 		var notification = notifications[i];
 		element = $("<li class='collection-item blue-grey lighten-5'></li>");
-		element.append("<div class='row'><h3 class='col s6'>"+ $.datepicker.formatDate("dd MM, yy", notification.date)+"</h3><div class='col s2 center-align'><a class='btn-floating btn-small waves-effect waves-light red valign delete-notification'><i class='material-icons'>delete</i></a></div></div>");
+		element.append("<div class='row'><h3 class='col s10'>"+ $.datepicker.formatDate("dd MM, yy", notification.date)+"</h3><div class='col s2 center-align'><a class='btn-floating btn-small waves-effect waves-light red valign delete-notification'><i class='material-icons'>delete</i></a></div></div>");
 		element.append("<p>"+notification.text+"</p>");
 		$("#notification-collection").append(element);
 	}
