@@ -154,7 +154,8 @@ Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback)
     var calendarID = calendar.id;
     console.log(calendar)
     var now = new Date()
-    var nowMax = (new Date()).setDate(now.getDate()+7)
+    var nowMax = new Date()
+    nowMax.setDate(now.getDate()+7)
     calendarAPI.events.list({
       auth: auth,
       calendarId: 'primary',
