@@ -154,17 +154,18 @@ Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback)
     var calendarID = calendar.id;
     console.log(calendar)
     var now = new Date()
+    var nowMax = now.setDate(now.getDate()+7)
     calendarAPI.events.list({
       auth: auth,
-      calendarId: calendarID,
+      calendarId: 'primary',
       timeMin: now.toISOString(),
-      timeMax: now.setDate(now.getDate()+7),
+      timeMax: nowMax.toISOString(),
       singleEvents: true,
       orderBy: 'startTime'
   }, function(err, response) {
     if (err) {
       console.log('The API returned an error: ' + err);
-      callback(err, null);
+      return callback(err, null);
     }
     var googleEvents = response.items;
     bus.emit("calendarEventsReceived", err, events);
