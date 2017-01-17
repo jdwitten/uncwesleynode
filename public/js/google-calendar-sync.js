@@ -159,10 +159,10 @@ Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback)
     calendarAPI.events.list({
       auth: auth,
       calendarId: 'primary',
-      timeMin: now.toISOString(),
-      timeMax: nowMax.toISOString(),
-      //singleEvents: true,
-      //orderBy: 'startTime'
+      timeMin: (new Date()).toISOString(),
+      maxResults: 10,
+      singleEvents: true,
+      orderBy: 'startTime'
   }, function(err, response) {
     if (err) {
       console.log('The API returned an error: ' + err);
