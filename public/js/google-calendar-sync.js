@@ -161,7 +161,7 @@ Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback)
       calendarId: 'primary',
       timeMin: now.toISOString(),
       timeMax: nowMax.toISOString(),
-      singleEvents: true,
+      //singleEvents: true,
       orderBy: 'startTime'
   }, function(err, response) {
     if (err) {
