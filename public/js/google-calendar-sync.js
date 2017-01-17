@@ -162,7 +162,7 @@ Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback)
       timeMin: now.toISOString(),
       timeMax: nowMax.toISOString(),
       //singleEvents: true,
-      orderBy: 'startTime'
+      //orderBy: 'startTime'
   }, function(err, response) {
     if (err) {
       console.log('The API returned an error: ' + err);
