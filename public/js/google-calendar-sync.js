@@ -168,6 +168,7 @@ Calendar.prototype.createEventsToSync = function(auth, existingEvents, callback)
       console.log('The API returned an error: ' + err);
       return callback(err, null);
     }
+    console.log(response)
     var googleEvents = response.items;
     bus.emit("calendarEventsReceived", err, events);
     if (events.length == 0) {
