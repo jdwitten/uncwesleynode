@@ -1,4 +1,5 @@
 var LoadedEvents;
+var VisibleEvents;
 var LoadedPrayers;
 var LoadedBlogs;
 var LoadedUsers;
@@ -200,13 +201,15 @@ $(document).ready(function(){
     	}
     })
 
+
     $(document).on("click",".delete-event", function(){
     	console.log("clicked delete event");
     	var eventContainer = $(this).parent().parent().parent().parent().parent()
 		var index = eventContainer.index() - 1;
 		console.log(eventContainer, index)
+
 		if(confirm("Are you sure you want to delete this event?")==true){
-			deleteEvent(LoadedEvents[index].id);
+			deleteEvent(VisibleEvents[index].id);
 		}
 	})
 
@@ -268,6 +271,16 @@ $(document).ready(function(){
 	getNotifications();
 
 })
+
+function numEventsBefore(event){
+	var num = 0;
+	for(var i=0; i<LoadedEvents.length; i++){
+		if(event.date.getTime() > LoadedEvents[i].getTime){
+			num += 1
+		}
+	}
+	return num
+}
 
 function validateEvent(event){
     if(event.title.length<1 || event.title.length > 40){
@@ -629,6 +642,7 @@ var buildPrayers = function(prayers, filter){
 		2 - only past events
 */
 var buildEvents = function(events, filter){
+	VisibleEvents = []
 	var today = new Date()
 	$("#event-collection").empty();
 	var element, header, body, row;
@@ -653,7 +667,7 @@ var buildEvents = function(events, filter){
 				break;
 		}
 		if(!valid) continue;
-
+		VisibleEvents.push(event)
 		element = $("<li id='event_container_"+event.id+"'></li>");
 		header = $("<div class='collapsible-header'><i class='material-icons'>today</i>"+event.title+"</div>")
 		body = $("<div class='collapsible-body'></div>");
